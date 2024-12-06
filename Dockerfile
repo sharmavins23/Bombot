@@ -7,6 +7,7 @@ WORKDIR /app
 
 # Copy package.json over, npm install all files
 COPY package.json ./
+RUN apk add git
 RUN npm install
 # Copy all files over
 COPY . .
