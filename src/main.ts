@@ -30,6 +30,9 @@ export const bot = new Client({
             isDev ? "testbot," : "bombot,",
             // Simplified non-comma for lazy users
             isDev ? "testbot" : "bombot",
+            // Uppercase variants for mobile users
+            isDev ? "Testbot," : "Bombot,",
+            isDev ? "Testbot" : "Bombot",
         ],
     },
 });
