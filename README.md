@@ -1,5 +1,9 @@
 # Bombot
 
+![clock-town](img/clock-town.jpg)
+
+_The Bombers Secret Society of Justice forever!_
+
 Bombot is a JavaScript-based rewrite of
 [@18maherc](https://github.com/18maherc)'s
 [Discord-Bot](https://github.com/18maherc/Discord-Bot) project. It re-implements
