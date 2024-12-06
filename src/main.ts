@@ -1,10 +1,10 @@
 import { dirname, importx } from "@discordx/importer";
+import chalk from "chalk";
 import type { Message } from "discord.js";
 import { IntentsBitField } from "discord.js";
 import { Client } from "discordx";
-import { getGitCommitHash } from "./utils/git.js";
-import chalk from "chalk";
 import "dotenv/config";
+import { getGitCommitHash } from "./utils/git.js";
 
 // ===== Configuration =========================================================
 
@@ -48,6 +48,7 @@ bot.once("ready", () => {
 
 // Message handler
 bot.on("messageCreate", (message: Message) => {
+    // Handle any simple commands
     bot.executeCommand(message);
 });
 
@@ -55,7 +56,8 @@ bot.on("messageCreate", (message: Message) => {
 
 // Run!
 async function run() {
-    await importx(`${dirname(import.meta.url)}/commands/**/*.{ts,js}`);
+    // Import all events and commands
+    await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.{ts,js}`);
 
     // Handle the bot separately depending on dev vs prod
     // Start the bot
