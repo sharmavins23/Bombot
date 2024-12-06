@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { SimpleCommandMessage } from "discordx";
+import type { SimpleCommandMessage } from "discordx";
 
 export function logOnFunctionCall(
     functionName: string,

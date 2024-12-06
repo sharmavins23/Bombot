@@ -6,6 +6,14 @@ Bombot is a JavaScript-based rewrite of
 all features of the prior as well as adds new ones, and all runs on a Docker
 container hosted by [@AndrewJones-PSU](https://github.com/AndrewJones-PSU).
 
+Under the hood, this project uses a "poor man's CI/CD pipeline" - A GitHub
+action is configured to automatically build this project into a Docker image,
+which is published onto Dockerhub. A separate sister Watchtower server is
+running alongside the current production deployment of the bot; Every 60
+seconds, the Watchtower server automatically checks the hash of the uploaded
+Docker image, and if it differs, the Watchtower server pulls the image down and
+restarts the bot's container with the new image.
+
 # Development
 
 If you are an administrator, it's highly recommended that you _never_ push

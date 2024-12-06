@@ -1,6 +1,6 @@
 import type { SimpleCommandMessage } from "discordx";
 import { Discord, SimpleCommand } from "discordx";
-import { logOnFunctionCall } from "../../utils/logging.ts";
+import { logOnFunctionCall } from "../../utils/logging.js";
 
 @Discord()
 export class HelloWorld {

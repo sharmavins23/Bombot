@@ -9,8 +9,7 @@ import "dotenv/config";
 // ===== Configuration =========================================================
 
 // Check if running in development environment or not
-const args = process.argv.slice(2);
-const isDev = args.includes("dev");
+const isDev = process.env.RUNTIME_ENV == "beta";
 
 // Create a new bot
 export const bot = new Client({
