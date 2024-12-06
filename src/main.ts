@@ -6,10 +6,6 @@ import "dotenv/config";
 
 // ===== Configuration =========================================================
 
-// Check if running in development environment or not
-const args = process.argv.slice(2);
-const isDev = args.includes("dev");
-
 // Create a new bot
 export const bot = new Client({
     intents: [
@@ -20,7 +16,7 @@ export const bot = new Client({
         IntentsBitField.Flags.GuildVoiceStates,
         IntentsBitField.Flags.MessageContent,
     ],
-    silent: !isDev, // Enable debug logs when testing in development
+    silent: false, // Enable debug logs always
     simpleCommand: {
         prefix: [`<@${process.env.BOT_CLIENT_ID}>`, "bombot,", "!"],
     },
@@ -45,7 +41,7 @@ bot.on("messageCreate", (message: Message) => {
 
 // Run!
 async function run() {
-    await importx(`${dirname(import.meta.url)}/{events,commands}/**/*.ts`);
+    await importx(`${dirname(import.meta.url)}/{commands}/**/*.{ts,js}`);
 
     // Handle the bot separately depending on dev vs prod
     // Start the bot
