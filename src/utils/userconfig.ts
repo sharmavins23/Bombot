@@ -9,6 +9,9 @@ interface UserConfiguration {
     nick: string;
 }
 
+/**
+ * Consolidates all user configurations into a single object.
+ */
 const userConfig: { [key: string]: UserConfiguration } = {
     Andy: {
         authorized: false,

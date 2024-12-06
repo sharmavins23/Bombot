@@ -48,6 +48,13 @@ When you wish to test your code in a more production-oriented way, simply run
 The following are a series of commands and functionalities that need to be
 added.
 
+## Meta
+
+- Add a gamma step in the pipeline deploying to the development bot. If faulty
+  images are pushed, they force Watchtower to crash; Catching faulty images
+  (that may build on local, but don't on Docker) should assist in reducing
+  failures.
+
 ## General commands
 
 - Wordcloud functionality (and saved storage in a persistent duck-db)

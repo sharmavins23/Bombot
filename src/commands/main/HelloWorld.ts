@@ -4,6 +4,11 @@ import { logOnFunctionCall } from "../../utils/logging.js";
 
 @Discord()
 export class HelloWorld {
+    /**
+     * Hello, world!
+     *
+     * @param command The command message.
+     */
     @SimpleCommand({ aliases: ["hi"] })
     async helloWorld(command: SimpleCommandMessage): Promise<void> {
         logOnFunctionCall("helloWorld()", command);
