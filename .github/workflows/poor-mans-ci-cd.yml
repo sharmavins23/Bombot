@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: A Poor Man's CI/CD Pipeline
 
 on:
     push:
