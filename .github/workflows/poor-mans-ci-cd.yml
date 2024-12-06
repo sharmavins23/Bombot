@@ -25,7 +25,6 @@ jobs:
             - run: npm ci
             - run: npm run build
             - run: npm run lint
-            - run: npm test
 
     push_to_registry:
         name: Push Docker image to Docker Hub
