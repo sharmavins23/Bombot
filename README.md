@@ -6,6 +6,35 @@ Bombot is a JavaScript-based rewrite of
 all features of the prior as well as adds new ones, and all runs on a Docker
 container hosted by [@AndrewJones-PSU](https://github.com/AndrewJones-PSU).
 
+# Development
+
+If you are an administrator, it's highly recommended that you _never_ push
+directly to mainline without testing extensively. If you are not a collaborator
+on the project, feel free to put in a pull request! We can test it, merge it,
+and potentially roll it back when it breaks everything.
+
+To format your code, type `npm run format`. Ensure that you format your code
+before pushing it to master.
+
+Testing locally requires a `.env` set up. The format is of the following:
+
+```dotenv
+BOT_CLIENT_ID=<Your bot client ID here!>
+BOT_TOKEN=<Your bot token here! Don't lose it!>
+```
+
+Obviously, testing should never be done on the production-facing Bombot client.
+You can create your own testing client if you wish, as well.
+
+When testing, you can run `npm test`. Behind the hood, this uses `nodemon` to
+automatically refresh and restart the server every time code changes occur,
+meaning you can quickly iterate on your code. **This will not compile the
+TypeScript files to JavaScript**, so it does not perfectly emulate the
+production environment.
+
+When you wish to test your code in a more production-oriented way, simply run
+`npm start`. This will compile the JavaScript files and run those instead.
+
 # TODOs
 
 The following are a series of commands and functionalities that need to be
