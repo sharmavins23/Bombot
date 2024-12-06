@@ -1,8 +1,9 @@
 # Developer files
 .vscode
 
-# Secret files - Mostly for beta testing!
+# Secret files
 .env
+docker-compose.yaml
 
 # Build files
 node_modules/
