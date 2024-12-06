@@ -1,0 +1,33 @@
+{
+    "name": "bombot",
+    "version": "1.0.0",
+    "description": "Bombot is a JavaScript-based rewrite of\r [@18maherc](https://github.com/18maherc)'s\r [Discord-Bot](https://github.com/18maherc/Discord-Bot) project. It re-implements\r all features of the prior as well as adds new ones, and all runs on a Docker\r container hosted by [@AndrewJones-PSU](https://github.com/AndrewJones-PSU).",
+    "type": "module",
+    "main": "build/main.js",
+    "scripts": {
+        "format": "npx prettier . --write",
+        "dev": "node --loader ts-node/esm/transpile-only src/main.ts",
+        "build": "format && tsc",
+        "start": "npm run build && node build/main.js",
+        "test": "nodemon --exec npm run dev --watch src --ext ts"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@discordx/importer": "^1.3.1",
+        "discord.js": "^14.16.3",
+        "discordx": "^11.12.2",
+        "dotenv": "^16.4.7"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.1",
+        "nodemon": "^3.1.7",
+        "prettier": "^3.4.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.7.2"
+    },
+    "engines": {
+        "node": ">=16.0.0",
+        "npm": ">=7.0.0"
+    }
+}

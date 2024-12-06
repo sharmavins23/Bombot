@@ -1,0 +1,9 @@
+# Developer files
+.vscode
+
+# Secret files - Mostly for beta testing!
+.env
+
+# Build files
+node_modules/
+build/
