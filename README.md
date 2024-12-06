@@ -44,6 +44,7 @@ added.
 
 - Wordcloud functionality (and saved storage in a persistent duck-db)
 - Help command
+- Links with embeds, to bypass Discord's faulty nature
 
 ## Old functionality - To be ported over
 
