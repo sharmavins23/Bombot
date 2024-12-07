@@ -15,6 +15,8 @@ export interface Command {
  */
 export interface MessageCommand extends Command {
     aliases?: string[]; // Other names the command can be called by
+    usage: string[]; // How to use the command
+    detailed?: string; // Detailed description of the command
 }
 
 /**

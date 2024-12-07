@@ -7,6 +7,7 @@ import { fileURLToPath, pathToFileURL } from "url";
 import "./extensions/Discord.js";
 import { getGitCommitHash } from "./utils/GitTools.js";
 import { LogX } from "./utils/Logging.js";
+import { Stringy } from "./utils/Strings.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +63,11 @@ async function handleMessageCommands(message: Message) {
     )
         return;
 
+    // Shortcut - If the message is just the prefix, call Help
+    if (args.length === 1) {
+        args.push("help");
+    }
+
     // Check if args[1] is a command
     if (args.length < 2) return;
     let command = client.commands.message.get(args[1].toLowerCase());
@@ -75,7 +81,46 @@ async function handleMessageCommands(message: Message) {
             );
         });
 
-        if (!command) return;
+        // If we still don't have a command, chastise the user
+        if (!command) {
+            // We could call Help here directly, but this is funnier
+            const flavortext = {
+                strings: [
+                    `I'm sorry, ${message.author.displayName}. I'm afraid I can't do that.`,
+                    `Get a load of this guy, trying to use \`${args[1]}\` as a command.`,
+                    `I'm sorry, I don't know the command \`${args[1]}\`. Why don't you ask for help?`,
+                    `\`${args[1]}\`? Is this some sick kind of joke?`,
+                    `What are you even saying`,
+                    `I don't recognize \`${args[1]}\`. Maybe try something else?`,
+                    `Command \`${args[1]}\` not found. Please check your spelling.`,
+                    `Oops! \`${args[1]}\` isn't a valid command.`,
+                    `Looks like \`${args[1]}\` isn't something I can do.`,
+                    `Sorry, but \`${args[1]}\` doesn't seem to be a command I know.`,
+                    `Hmm, \`${args[1]}\` doesn't ring a bell.`,
+                    `Your free trial of WinRAR has expired. Please purchase a license to continue using \`${args[1]}\`.`,
+                    `\`${args[1]}\` ain't no command I ever heard of. They speak English in \`${args[1]}\`?`,
+                    `\`${args[1]}\`? I hardly knew her!`,
+                ],
+                emojis: [
+                    "🤖",
+                    "🤔",
+                    "🤨",
+                    "😒",
+                    "a:joey:768835939493478400",
+                    "a:deadass:1007451877476159578",
+                    "a:deepthought:747542528135266345",
+                    "a:asianoof:747545253896257585",
+                    "a:bruhv:740278121718218906",
+                    "a:cat:755949336877072425",
+                    "a:coolstorybro:1010958995986587678",
+                    "a:zamn:1010963288273723455",
+                    "a:thefuq:741823376867197009",
+                ],
+            };
+            await message.react(Stringy.flavorIt(flavortext.emojis));
+            await message.reply(Stringy.flavorIt(flavortext.strings));
+            return;
+        }
     }
 
     // Join args[2:] into a single string, and replace the message.content with it
