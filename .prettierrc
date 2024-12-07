@@ -3,7 +3,6 @@
     "bracketSameLine": false,
     "bracketSpacing": true,
     "embeddedLanguageFormatting": "auto",
-    "endOfLine": "crlf",
     "jsxSingleQuote": false,
     "plugins": ["prettier-plugin-organize-imports"],
     "printWidth": 80,
