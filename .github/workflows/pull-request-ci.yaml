@@ -4,6 +4,30 @@ on:
     pull_request:
 
 jobs:
+    build_and_lint:
+        name: Build and lint
+        runs-on: ubuntu-latest
+        permissions:
+            packages: read
+        steps:
+            - name: Checkout the repository
+              uses: actions/checkout@v4
+
+            - name: Set up Node.JS 22.x
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22.x
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build TypeScript to JavaScript
+              run: npm run build
+
+            - name: Run linter
+              run: npm run lint
+
     test_gamma:
         name: Test in gamma environment
         runs-on: ubuntu-latest

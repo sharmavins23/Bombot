@@ -7,7 +7,7 @@ export class LogX {
      *
      * @param args Any arguments to log.
      */
-    static log(...args: any[]) {
+    static log(...args: unknown[]) {
         console.log(...args);
     }
 
@@ -18,7 +18,7 @@ export class LogX {
      *
      * @param args Any arguments to log.
      */
-    static logD(...args: any[]) {
+    static logD(...args: unknown[]) {
         console.log(chalk.gray("[DBG]"), ...args);
     }
 
@@ -28,7 +28,7 @@ export class LogX {
      *
      * @param args Any arguments to log.
      */
-    static logI(...args: any[]) {
+    static logI(...args: unknown[]) {
         console.log(chalk.blueBright("[INF]"), ...args);
     }
 
@@ -38,7 +38,7 @@ export class LogX {
      *
      * @param args Any arguments to log.
      */
-    static logW(...args: any[]) {
+    static logW(...args: unknown[]) {
         console.warn(chalk.yellowBright("[WRN]"), ...args);
     }
 
@@ -47,7 +47,7 @@ export class LogX {
      *
      * @param args Any arguments to log.
      */
-    static logE(...args: any[]) {
+    static logE(...args: unknown[]) {
         console.error(chalk.redBright("[ERR]"), ...args);
     }
 

@@ -11,7 +11,7 @@ const reactionCommand: ReactionCommand = {
     checker: async (message: Message) => {
         return message.content.toLowerCase().includes("pog");
     },
-    executable: async (message: Message) => {},
+    executable: async () => {},
 };
 
 export default reactionCommand;

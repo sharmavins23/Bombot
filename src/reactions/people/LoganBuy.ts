@@ -10,8 +10,8 @@ const reactionCommand: ReactionCommand = {
     name: "LoganBuy",
     description: "Complains at Logan whenever he wants to buy a thing.",
     checker: async (message: Message) => {
-        let isHim = message.author.id === UserConfig.Logan.id;
-        let isBuy = Stringy.messageContainsAll(message.content, [
+        const isHim = message.author.id === UserConfig.Logan.id;
+        const isBuy = Stringy.messageContainsAll(message.content, [
             "should",
             "I",
             "buy|get",
@@ -24,7 +24,7 @@ const reactionCommand: ReactionCommand = {
             emoji: string | string[];
             msg: string;
         }
-        let probabilities: { [key: string]: LoganBuyProbability } = {
+        const probabilities: { [key: string]: LoganBuyProbability } = {
             "Multiple Yes": {
                 value: 0.02,
                 emoji: ["💸", "a:husa:913575552999362571"],
@@ -64,7 +64,7 @@ const reactionCommand: ReactionCommand = {
                 msg: "You should kill yourself, NOW!",
             },
         };
-        let randomRoll = Math.random();
+        const randomRoll = Math.random();
         let probabilitySum = 0;
 
         // Iterate through the keys and react with the emoji, and reply the msg
