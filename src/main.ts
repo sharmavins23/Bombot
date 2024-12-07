@@ -153,7 +153,9 @@ client.once("ready", async () => {
         ChannelConfig.brobotics.id,
     ) as TextChannel;
     if (channel) {
-        channel.send(`${botName}:${currentRuntimeEnvironment} is now online!`);
+        channel.send(
+            `${botName}:${currentRuntimeEnvironment} is now online! Latest commit: ${getGitCommitHash()}`,
+        );
     } else {
         LogX.logE(
             `Could not find channel with ID ${ChannelConfig.brobotics.id}.`,
