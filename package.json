@@ -20,6 +20,7 @@
         "discord.js": "^14.16.3",
         "discordx": "^11.12.2",
         "dotenv": "^16.4.7",
+        "rimraf": "^6.0.1",
         "ts-node": "^10.9.2",
         "typescript": "^5.7.2"
     },
@@ -44,11 +45,11 @@
     "name": "bombot",
     "scripts": {
         "build": "tsc",
-        "clean": "rm -rf build",
+        "clean": "rimraf build",
         "dev": "node --loader ts-node/esm/transpile-only src/main.ts",
         "format": "eslint . --fix && npx prettier . --write",
         "lint": "eslint .",
-        "start": "npm run build && node build/main.js",
+        "start": "npm run clean && npm run build && node build/main.js",
         "test": "nodemon --exec npm run dev --watch src --ext ts"
     },
     "type": "module",
