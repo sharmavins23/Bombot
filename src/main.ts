@@ -6,9 +6,17 @@ import { LogX } from "./utils/Logging.js";
 
 // ===== Configuration =========================================================
 
-// Check if running in development environment or not
-export const isDev = process.env.RUNTIME_ENV == "beta";
-export const botName = isDev ? "Testbot" : "Bombot";
+export enum Environments {
+    beta = "beta",
+    gamma = "gamma",
+    prod = "prod",
+}
+
+// Handle runtime environment
+export const currentRuntimeEnvironment: Environments =
+    (process.env.RUNTIME_ENV as Environments) ?? Environments.beta;
+export const botName =
+    currentRuntimeEnvironment == Environments.prod ? "Bombot" : "Testbot";
 
 // Create a new bot
 const client = new Client({
@@ -43,6 +51,16 @@ async function run() {
 
     LogX.log(`${botName} is now succesfully`, chalk.green("logged in") + "!");
     LogX.logD(`Latest deployment: ${chalk.cyan(getGitCommitHash())}`);
+
+    // For Gamma testing, we can stop here
+    if (currentRuntimeEnvironment === Environments.gamma) {
+        LogX.log(
+            `${botName} is running in ${chalk.yellow(
+                currentRuntimeEnvironment,
+            )} environment. Stopping here.`,
+        );
+        process.exit(0);
+    }
 }
 
 run();
