@@ -156,7 +156,7 @@ client.once("ready", async () => {
     if (channel) {
         const latestCommitMetadata = getGitCommitMetadata();
         const blurb = new EmbedBuilder()
-            .setTitle(`${botName} just got deployed!`)
+            .setTitle(`${botName} successfully deployed and started up!`)
             .setColor(latestCommitMetadata.color)
             .setURL("https://github.com/sharmavins23/Bombot")
             .setAuthor({
@@ -180,9 +180,6 @@ client.once("ready", async () => {
         await channel.send({
             embeds: [blurb],
         });
-        // channel.send(
-        //     `${botName}:${currentRuntimeEnvironment} is now online! Latest commit: **${getGitCommitHash()}**`,
-        // );
     } else {
         LogX.logE(
             `Could not find channel with ID ${ChannelConfig.brobotics.id}.`,
@@ -202,6 +199,14 @@ client.once("ready", async () => {
 
 // Message handler
 client.on("messageCreate", async (message: Message) => {
+    // If not in prod, limit responses to the #brobotics channel only
+    if (
+        currentRuntimeEnvironment !== Environments.prod &&
+        message.channel.id !== ChannelConfig.brobotics.id
+    ) {
+        return;
+    }
+
     // Handle message commands
     handleMessageCommands(message);
     handleReactionCommands(message);
