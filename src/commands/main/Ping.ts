@@ -14,10 +14,13 @@ const messageCommand: MessageCommand = {
         let start = Date.now();
         let pong = await message.reply("🏓 Pong!");
         let end = Date.now();
-        let roundTripTime = end - start;
+        let serverTripTime = end - start;
+        let clientTripTime = pong.createdTimestamp - message.createdTimestamp;
 
         // Edit the message to include the round-trip time
-        await pong.edit(`🏓 Pong! Round-trip time: ${roundTripTime}ms`);
+        await pong.edit(
+            `🏓 Pong! Connection times: 🌐 ${serverTripTime}ms, 👤 ${clientTripTime}ms`,
+        );
     },
 };
 
