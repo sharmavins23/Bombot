@@ -18,6 +18,9 @@ seconds, the Watchtower server automatically checks the hash of the uploaded
 Docker image, and if it differs, the Watchtower server pulls the image down and
 restarts the bot's container with the new image.
 
+Check out repository stats
+[here](https://repo-tracker.com/r/gh/sharmavins23/Bombot)!
+
 # Development
 
 If you are an administrator, it's highly recommended that you _never_ push

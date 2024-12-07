@@ -2,6 +2,7 @@ import chalk from "chalk";
 import {
     Client,
     Collection,
+    EmbedBuilder,
     GatewayIntentBits,
     Message,
     TextChannel,
@@ -12,7 +13,7 @@ import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import "./extensions/Discord.js";
 import ChannelConfig from "./utils/ChannelConfig.js";
-import { getGitCommitHash } from "./utils/GitTools.js";
+import { getGitCommitHash, getGitCommitMetadata } from "./utils/GitTools.js";
 import { LogX } from "./utils/Logging.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -153,9 +154,35 @@ client.once("ready", async () => {
         ChannelConfig.brobotics.id,
     ) as TextChannel;
     if (channel) {
-        channel.send(
-            `${botName}:${currentRuntimeEnvironment} is now online! Latest commit: ${getGitCommitHash()}`,
-        );
+        const latestCommitMetadata = getGitCommitMetadata();
+        const blurb = new EmbedBuilder()
+            .setTitle(`${botName} just got deployed!`)
+            .setColor(latestCommitMetadata.color)
+            .setURL("https://github.com/sharmavins23/Bombot")
+            .setAuthor({
+                name: latestCommitMetadata.author,
+                iconURL: `https://github.com/${latestCommitMetadata.author}.png`,
+            })
+            .setTimestamp(latestCommitMetadata.date)
+            .setDescription(
+                `Deployed in \`${currentRuntimeEnvironment}\` environment.`,
+            )
+            .addFields({
+                name: `\`HEAD\` -> \`${latestCommitMetadata.head}\``,
+                value: `[\`${latestCommitMetadata.hash}\`](https://github.com/sharmavins23/Bombot/commit/${latestCommitMetadata.commit}) ${latestCommitMetadata.message} ([tree](https://github.com/sharmavins23/Bombot/tree/${latestCommitMetadata.head}))`,
+            })
+            .setFooter({
+                text: "Last commit at:",
+                iconURL:
+                    "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
+            });
+
+        await channel.send({
+            embeds: [blurb],
+        });
+        // channel.send(
+        //     `${botName}:${currentRuntimeEnvironment} is now online! Latest commit: **${getGitCommitHash()}**`,
+        // );
     } else {
         LogX.logE(
             `Could not find channel with ID ${ChannelConfig.brobotics.id}.`,
