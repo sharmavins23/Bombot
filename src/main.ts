@@ -44,6 +44,8 @@ export const client = new Client({
 
 /**
  * Handle message commands.
+ *
+ * @param message The message to handle.
  */
 async function handleMessageCommands(message: Message) {
     // Don't handle message commands from bots
@@ -90,10 +92,45 @@ async function handleMessageCommands(message: Message) {
     }
 }
 
+/**
+ * Handle reaction commands.
+ *
+ * @param message The message to handle.
+ */
+async function handleReactionCommands(message: Message) {
+    // For each reaction command, pass it in and check if it should be executed
+    client.commands.reaction.each(async (command) => {
+        if (await command.checker(message)) {
+            // If the command should be executed, execute it
+            try {
+                LogX.logI(
+                    `${chalk.green("Reaction")}Command ${chalk.magenta(command.group)}.${chalk.cyan(command.name)} executed by ${chalk.blue(message.author.tag)}.`,
+                );
+                command.executable(message);
+            } catch (error) {
+                LogX.logE(`Error executing command ${command.name}: ${error}`);
+            }
+            // Also, try to react with the emoji or send the message
+            if (command.emoji) {
+                if (Array.isArray(command.emoji)) {
+                    for (const emoji of command.emoji) {
+                        await message.react(emoji);
+                    }
+                } else {
+                    await message.react(command.emoji);
+                }
+            }
+            if (command.message) {
+                await message.reply(command.message);
+            }
+        }
+    });
+}
+
 // ===== OnEvent handlers ======================================================
 
 // Ready handler
-client.once("ready", () => {
+client.once("ready", async () => {
     // Register all commands
     if (!client.commands) {
         client.commands = {
@@ -101,12 +138,13 @@ client.once("ready", () => {
             reaction: new Collection(),
         };
     }
-    registerMessageCommands();
+    await registerMessageCommands();
+    await registerReactionCommands();
 
     // For Gamma testing, we can stop here
     if (currentRuntimeEnvironment === Environments.gamma) {
         LogX.logI(
-            `${botName} is running in ${chalk.yellow(
+            `${botName} is successfully running in ${chalk.yellow(
                 currentRuntimeEnvironment,
             )} environment. Stopping here.`,
         );
@@ -118,6 +156,7 @@ client.once("ready", () => {
 client.on("messageCreate", async (message: Message) => {
     // Handle message commands
     handleMessageCommands(message);
+    handleReactionCommands(message);
 });
 
 // ===== Command registration ==================================================
@@ -183,7 +222,57 @@ async function registerMessageCommands() {
             // Register the command
             client.commands.message.set(command.name.toLowerCase(), command);
             LogX.logD(
-                `Registered command ${chalk.magenta(command.group)}.${chalk.cyan(command.name)}.`,
+                `Registered ${chalk.green("Message")}Command ${chalk.magenta(command.group)}.${chalk.cyan(command.name)}.`,
+            );
+        }
+    }
+}
+
+/**
+ * Register all reaction commands.
+ * Message commands are the default command style, where the bot waits for a
+ * particular prefix before executing a command.
+ */
+async function registerReactionCommands() {
+    LogX.log("Registering reaction commands...");
+
+    client.commands.reaction = new Collection();
+    // Message commands are registered in ./commands/**/*.ts
+    let commandsPath = path.join(__dirname, "reactions");
+    let commandsFolders = fs.readdirSync(commandsPath);
+
+    // Iterate through all folders and find all files
+    for (const folder of commandsFolders) {
+        let commandFilesPath = path.join(commandsPath, folder);
+        let commandFiles = fs
+            .readdirSync(commandFilesPath)
+            .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
+        for (const file of commandFiles) {
+            let filePath = path.join(commandFilesPath, file);
+            let commandModule = await import(pathToFileURL(filePath).href);
+            let command = commandModule.default;
+
+            // The command should have imported successfully
+            LogX.assert(
+                command && command.name,
+                `Failed to register command from file ${filePath}. Command: ${command.name}`,
+            );
+            // No group should be set by default
+            LogX.assert(
+                !command.group,
+                `Group should not be set by default. Command: ${command.name}`,
+            );
+            // Error if name is not alphanumeric
+            LogX.assert(
+                /^[a-zA-Z0-9]+$/.test(command.name),
+                `Command name ${command.name} should be alphanumeric.`,
+            );
+
+            command.group = folder;
+            // Register the command
+            client.commands.reaction.set(command.name.toLowerCase(), command);
+            LogX.logD(
+                `Registered ${chalk.green("Reaction")}Command ${chalk.magenta(command.group)}.${chalk.cyan(command.name)}.`,
             );
         }
     }
