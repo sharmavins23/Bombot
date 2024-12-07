@@ -1,10 +1,17 @@
 import chalk from "chalk";
-import { Client, Collection, GatewayIntentBits, Message } from "discord.js";
+import {
+    Client,
+    Collection,
+    GatewayIntentBits,
+    Message,
+    TextChannel,
+} from "discord.js";
 import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import "./extensions/Discord.js";
+import ChannelConfig from "./utils/ChannelConfig.js";
 import { getGitCommitHash } from "./utils/GitTools.js";
 import { LogX } from "./utils/Logging.js";
 
@@ -140,6 +147,18 @@ client.once("ready", async () => {
     }
     await registerMessageCommands();
     await registerReactionCommands();
+
+    // Send a message in the #brobotics channel once online
+    const channel = client.channels.cache.get(
+        ChannelConfig.brobotics.id,
+    ) as TextChannel;
+    if (channel) {
+        channel.send(`${botName}:${currentRuntimeEnvironment} is now online!`);
+    } else {
+        LogX.logE(
+            `Could not find channel with ID ${ChannelConfig.brobotics.id}.`,
+        );
+    }
 
     // For Gamma testing, we can stop here
     if (currentRuntimeEnvironment === Environments.gamma) {
