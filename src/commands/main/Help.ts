@@ -52,7 +52,7 @@ function generateBaseHelpEmbed(message: Message): EmbedBuilder {
         })
         .setTimestamp()
         .setFooter({
-            text: "Type \`bombot help <command>\` for more info",
+            text: "Type `bombot help <command>` for more info",
         });
 }
 
@@ -113,7 +113,7 @@ function generateCommandHelpEmbed(
     // Generates different embeds for different command types
     if (command.type === CommandType.MESSAGE) {
         // Get the MessageCommand by searching through the Collection
-        let messageCommand: MessageCommand =
+        const messageCommand: MessageCommand =
             message.client.commands.message.find(
                 (messageCommand: MessageCommand) => {
                     return messageCommand.name === command.name;
@@ -132,7 +132,7 @@ function generateCommandHelpEmbed(
             `This is a ${CommandType.MESSAGE} Message command, so you need to call it yourself.`,
         );
 
-        let usages: string[] = messageCommand.usage.map(
+        const usages: string[] = messageCommand.usage.map(
             (usage) => `• bombot \`${usage}\``,
         );
 
@@ -196,11 +196,11 @@ const messageCommand: MessageCommand = {
         }
 
         // Page if >10 commands
-        let areWeGoingToPage: boolean = commandsList.length > 10;
-        let pageCount = Math.ceil(commandsList.length / 10);
+        const areWeGoingToPage: boolean = commandsList.length > 10;
+        const pageCount = Math.ceil(commandsList.length / 10);
 
         // Check what the user passed in as the message content
-        let switcher: string = message.content.split(" ")[0];
+        const switcher: string = message.content.split(" ")[0];
 
         let helpEmbed;
 
@@ -211,7 +211,7 @@ const messageCommand: MessageCommand = {
                     command.name.toLowerCase() === switcher.toLowerCase(),
             )
         ) {
-            let searchedCommand = switcher;
+            const searchedCommand = switcher;
             LogX.logD(`Help called for command ${chalk.cyan(searchedCommand)}`);
 
             helpEmbed = generateCommandHelpEmbed(
@@ -225,7 +225,7 @@ const messageCommand: MessageCommand = {
         }
         // If it's a number and we're going to page...
         else if (areWeGoingToPage && !isNaN(parseInt(switcher))) {
-            let pageNumber = parseInt(switcher);
+            const pageNumber = parseInt(switcher);
             LogX.logD(`Help called for page ${chalk.green(pageNumber)}`);
 
             // Slice commands to show the correct page
