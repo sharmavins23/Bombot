@@ -171,19 +171,19 @@ async function registerMessageCommands() {
 
     client.commands.message = new Collection();
     // Message commands are registered in ./commands/**/*.ts
-    let commandsPath = path.join(__dirname, "commands");
-    let commandsFolders = fs.readdirSync(commandsPath);
+    const commandsPath = path.join(__dirname, "commands");
+    const commandsFolders = fs.readdirSync(commandsPath);
 
     // Iterate through all folders and find all files
     for (const folder of commandsFolders) {
-        let commandFilesPath = path.join(commandsPath, folder);
-        let commandFiles = fs
+        const commandFilesPath = path.join(commandsPath, folder);
+        const commandFiles = fs
             .readdirSync(commandFilesPath)
             .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
         for (const file of commandFiles) {
-            let filePath = path.join(commandFilesPath, file);
-            let commandModule = await import(pathToFileURL(filePath).href);
-            let command = commandModule.default;
+            const filePath = path.join(commandFilesPath, file);
+            const commandModule = await import(pathToFileURL(filePath).href);
+            const command = commandModule.default;
 
             // The command should have imported successfully
             LogX.assert(
@@ -238,19 +238,19 @@ async function registerReactionCommands() {
 
     client.commands.reaction = new Collection();
     // Message commands are registered in ./commands/**/*.ts
-    let commandsPath = path.join(__dirname, "reactions");
-    let commandsFolders = fs.readdirSync(commandsPath);
+    const commandsPath = path.join(__dirname, "reactions");
+    const commandsFolders = fs.readdirSync(commandsPath);
 
     // Iterate through all folders and find all files
     for (const folder of commandsFolders) {
-        let commandFilesPath = path.join(commandsPath, folder);
-        let commandFiles = fs
+        const commandFilesPath = path.join(commandsPath, folder);
+        const commandFiles = fs
             .readdirSync(commandFilesPath)
             .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
         for (const file of commandFiles) {
-            let filePath = path.join(commandFilesPath, file);
-            let commandModule = await import(pathToFileURL(filePath).href);
-            let command = commandModule.default;
+            const filePath = path.join(commandFilesPath, file);
+            const commandModule = await import(pathToFileURL(filePath).href);
+            const command = commandModule.default;
 
             // The command should have imported successfully
             LogX.assert(

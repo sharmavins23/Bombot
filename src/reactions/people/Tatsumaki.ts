@@ -12,7 +12,7 @@ const reactionCommand: ReactionCommand = {
     checker: async (message: Message) => {
         return message.author.id === UserConfig.Tatsumaki.id;
     },
-    executable: async (message: Message) => {},
+    executable: async () => {},
 };
 
 export default reactionCommand;

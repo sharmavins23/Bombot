@@ -11,13 +11,13 @@ const reactionCommand: ReactionCommand = {
     description: "Reacts with 🏳️‍🌈 whenever Andy gets a little quirky.",
     emoji: ["🏳️‍🌈", ":a:notvanilla:1216448770657615873"],
     checker: async (message: Message) => {
-        let isHim = message.author.id === UserConfig.Andy.id;
-        let isRaunchy = Stringy.messageContainsAll(message.content, [
+        const isHim = message.author.id === UserConfig.Andy.id;
+        const isRaunchy = Stringy.messageContainsAll(message.content, [
             "anal|ass|cock|dick|penis",
         ]);
         return isHim && isRaunchy;
     },
-    executable: async (message: Message) => {},
+    executable: async () => {},
 };
 
 export default reactionCommand;

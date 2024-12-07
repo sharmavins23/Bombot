@@ -11,11 +11,11 @@ const messageCommand: MessageCommand = {
 
     executable: async (message: Message) => {
         // Calculate the round-trip time
-        let start = Date.now();
-        let pong = await message.reply("🏓 Pong!");
-        let end = Date.now();
-        let serverTripTime = end - start;
-        let clientTripTime = pong.createdTimestamp - message.createdTimestamp;
+        const start = Date.now();
+        const pong = await message.reply("🏓 Pong!");
+        const end = Date.now();
+        const serverTripTime = end - start;
+        const clientTripTime = pong.createdTimestamp - message.createdTimestamp;
 
         // Edit the message to include the round-trip time
         await pong.edit(
