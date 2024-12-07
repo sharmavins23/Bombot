@@ -19,10 +19,13 @@ export interface MessageCommand extends Command {
 
 /**
  * Represents a reaction command that can be executed by the bot.
+ * The executable is overridden - If it returns true, the command will
+ * automatically react with the emoji(s) and/or send the message.
  */
 export interface ReactionCommand extends Command {
     emoji?: string | string[]; // Any emoji(s) the command will react with
     message?: string; // The message the command will respond with
+    checker: (message: Message) => Promise<boolean>; // Checks if command should be run
 }
 
 /**
