@@ -5,7 +5,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import "./extensions/Discord.js";
-import { getGitCommitHash } from "./utils/Git.js";
+import { getGitCommitHash } from "./utils/GitTools.js";
 import { LogX } from "./utils/Logging.js";
 
 const __filename = fileURLToPath(import.meta.url);
