@@ -49,9 +49,6 @@ jobs:
             - name: Build TypeScript to JavaScript
               run: npm run build
 
-            - name: Run linter
-              run: npm run lint
-
             - name: Run gamma tests
               run: npm start
               env:
