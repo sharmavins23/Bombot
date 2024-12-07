@@ -13,10 +13,11 @@ const __dirname = path.dirname(__filename);
 
 // ===== Configuration =========================================================
 
+// Possible runtime environments for the bot
 export enum Environments {
-    beta = "beta",
-    gamma = "gamma",
-    prod = "prod",
+    beta = "beta", // Development
+    gamma = "gamma", // Testing (CI/CD)
+    prod = "prod", // Production environment
 }
 
 // Handle runtime environment
@@ -25,6 +26,7 @@ export const currentRuntimeEnvironment: Environments =
 export const botName =
     currentRuntimeEnvironment == Environments.prod ? "Bombot" : "Testbot";
 
+// List of prefixes that the bot will respond to
 const prefixes = [botName, `${botName},`];
 
 // Create a new bot
@@ -80,7 +82,7 @@ async function handleMessageCommands(message: Message) {
     // Execute the command
     try {
         LogX.logI(
-            `Command ${chalk.magenta(command.group)}.${chalk.cyan(command.name)} executed by ${chalk.blue(message.author.tag)}.`,
+            `${chalk.green("Message")}Command ${chalk.magenta(command.group)}.${chalk.cyan(command.name)} executed by ${chalk.blue(message.author.tag)}.`,
         );
         command.executable(message);
     } catch (error) {
