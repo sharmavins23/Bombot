@@ -1,3 +1,5 @@
+// Logging.ts
+
 import chalk from "chalk";
 
 // Enhanced logging client.
