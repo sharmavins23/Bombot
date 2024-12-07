@@ -14,7 +14,7 @@ export class AndyEvents {
      * @returns Whether the message author is not this person.
      */
     notThem(message: Message) {
-        return message.author.id != userConfig.Ed.id;
+        return message.author.id === userConfig.Andy.id;
     }
 
     /**
@@ -27,11 +27,13 @@ export class AndyEvents {
     async reactRainbow([message]: ArgsOf<"messageCreate">): Promise<void> {
         if (this.notThem(message)) return;
 
-        if (messageContainsAll(message.content, ["anal|ass|cock|dick|penis"])) {
+        // TODO: match whole-word as opposed to substring, i.e. not reaction to "canal"
+        if (messageContainsAll(message.content, ["anal|ass|balls|cock|dick|gay|penis"])) {
             console.log(
                 chalk.yellow("AndyEvents.reactRainbow"),
                 "reaction emitted!",
             );
+            await message.react(":a:notvanilla:1216448770657615873")
             await message.react("🏳️‍🌈");
         }
     }

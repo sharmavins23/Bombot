@@ -44,7 +44,7 @@ const userConfig: { [key: string]: UserConfiguration } = {
     Tatsumaki: {
         authorized: false,
         id: "172002275412279296",
-        isBot: false,
+        isBot: true,
         name: "Tatsu#8792",
         nick: "Tatsumaki",
     },
