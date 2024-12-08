@@ -60,6 +60,9 @@ async function handleMessageCommands(message: Message) {
     // Don't handle message commands from bots
     if (message.author.bot) return;
 
+    // Don't handle commands without any text
+    if (!message.content) return;
+
     // Split message up on spaces
     let args = message.content.split(" ");
     // Remove any empty strings
