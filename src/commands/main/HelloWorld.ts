@@ -9,6 +9,7 @@ const messageCommand: MessageCommand = {
     name: "HelloWorld",
     description: "Says hello!",
     aliases: ["hello", "hi", "hey"],
+    usage: ["hello"],
 
     executable: async (message: Message) => {
         const member = message.member;

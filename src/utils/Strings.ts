@@ -25,4 +25,17 @@ export class Stringy {
             }
         });
     }
+
+    /**
+     * Gets a random flavortext from the list of flavortexts provided.
+     * This function takes in a passed-in list of strings and simply randomly
+     * selects one of them to return. As such, it can be used for a variety of
+     * other purposes.
+     *
+     * @param texts A list of flavortexts.
+     * @returns The (randomly) chosen flavortext.
+     */
+    static flavorIt(texts: string[]): string {
+        return texts[Math.floor(Math.random() * texts.length)];
+    }
 }
