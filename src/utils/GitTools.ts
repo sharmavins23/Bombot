@@ -62,7 +62,7 @@ export function getGitCommitHashColor(latestCommit?: string): HexColorString {
  */
 export function getGitCommitMetadata(): GitCommitMetadata {
     try {
-        return {
+        const latestCommitMetadata = {
             author: execSync("git log -1 --pretty=%an").toString().trim(),
             color: getGitCommitHashColor(getGitCommitHash()),
             commit: getGitCommitHash(false),
@@ -72,8 +72,14 @@ export function getGitCommitMetadata(): GitCommitMetadata {
             email: execSync("git log -1 --pretty=%ae").toString().trim(),
             hash: getGitCommitHash(),
             head: execSync("git rev-parse --abbrev-ref HEAD").toString().trim(),
-            message: execSync("git log -1 --pretty=%B").toString().trim(),
+            message:
+                execSync("git log -1 --pretty=%B")
+                    .toString()
+                    .trim()
+                    .substring(0, 80) + "...",
         };
+        LogX.logD("Git commit metadata fetched:", latestCommitMetadata);
+        return latestCommitMetadata;
     } catch (error) {
         LogX.logW("Failed to get Git commit metadata:", error);
         return {
