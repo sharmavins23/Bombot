@@ -59,6 +59,8 @@ export function getGitCommitHashColor(latestCommit?: string): HexColorString {
 
 /**
  * Gets the latest Git commit message and author of the repository.
+ *
+ * @returns The Git commit metadata of the repository.
  */
 export function getGitCommitMetadata(): GitCommitMetadata {
     try {
