@@ -18,6 +18,9 @@ seconds, the Watchtower server automatically checks the hash of the uploaded
 Docker image, and if it differs, the Watchtower server pulls the image down and
 restarts the bot's container with the new image.
 
+Check out repository stats
+[here](https://repo-tracker.com/r/gh/sharmavins23/Bombot)!
+
 # Development
 
 If you are an administrator, it's highly recommended that you _never_ push
@@ -46,6 +49,23 @@ production environment.
 
 When you wish to test your code in a more production-oriented way, simply run
 `npm start`. This will compile the JavaScript files and run those instead.
+
+# Testing
+
+Testing for the bot is fairly robust and strict. Obviously, testing can be done
+locally via `npm test`, which runs the TypeScript code as TypeScript (with no
+compilation). `npm start` can also be run locally to compile the JavaScript and
+run it.
+
+Testing is also done automatically (through
+`.github/workflows/pull-request-ci.yaml`) on every pull request. When a pull
+request is submitted, a check runs, automatically deploying a 'gamma' variant
+and ensuring it builds properly. The 'gamma' environment is as close to a
+production environment as possible, so (ideally) when the bot runs in gamma, if
+it succeeds, deployment will as well.
+
+Finally, testing in gamma is also run after a commit is merged to the master
+branch, before deployment. If the check fails, no deployment ever occurs.
 
 # License TL;DR
 

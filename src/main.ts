@@ -1,11 +1,19 @@
 import chalk from "chalk";
-import { Client, Collection, GatewayIntentBits, Message } from "discord.js";
+import {
+    Client,
+    Collection,
+    EmbedBuilder,
+    GatewayIntentBits,
+    Message,
+    TextChannel,
+} from "discord.js";
 import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
 import "./extensions/Discord.js";
-import { getGitCommitHash } from "./utils/GitTools.js";
+import ChannelConfig from "./utils/ChannelConfig.js";
+import { getGitCommitHash, getGitCommitMetadata } from "./utils/GitTools.js";
 import { LogX } from "./utils/Logging.js";
 import { Stringy } from "./utils/Strings.js";
 
@@ -186,6 +194,43 @@ client.once("ready", async () => {
     await registerMessageCommands();
     await registerReactionCommands();
 
+    // Send a message in the #brobotics channel once online
+    const channel = client.channels.cache.get(
+        ChannelConfig.brobotics.id,
+    ) as TextChannel;
+    if (channel) {
+        const latestCommitMetadata = getGitCommitMetadata();
+        const blurb = new EmbedBuilder()
+            .setTitle(`${botName} successfully deployed and started up!`)
+            .setColor(latestCommitMetadata.color)
+            .setURL("https://github.com/sharmavins23/Bombot")
+            .setAuthor({
+                name: latestCommitMetadata.author,
+                iconURL: `https://github.com/${latestCommitMetadata.author}.png`,
+            })
+            .setTimestamp(latestCommitMetadata.date)
+            .setDescription(
+                `Deployed in \`${currentRuntimeEnvironment}\` environment.`,
+            )
+            .addFields({
+                name: `\`HEAD\` -> \`${latestCommitMetadata.head}\``,
+                value: `[\`${latestCommitMetadata.hash}\`](https://github.com/sharmavins23/Bombot/commit/${latestCommitMetadata.commit}) ${latestCommitMetadata.message} ([tree](https://github.com/sharmavins23/Bombot/tree/${latestCommitMetadata.head}))`,
+            })
+            .setFooter({
+                text: "Last commit at:",
+                iconURL:
+                    "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png",
+            });
+
+        await channel.send({
+            embeds: [blurb],
+        });
+    } else {
+        LogX.logE(
+            `Could not find channel with ID ${ChannelConfig.brobotics.id}.`,
+        );
+    }
+
     // For Gamma testing, we can stop here
     if (currentRuntimeEnvironment === Environments.gamma) {
         LogX.logI(
@@ -199,6 +244,14 @@ client.once("ready", async () => {
 
 // Message handler
 client.on("messageCreate", async (message: Message) => {
+    // If not in prod, limit responses to the #brobotics channel only
+    if (
+        currentRuntimeEnvironment !== Environments.prod &&
+        message.channel.id !== ChannelConfig.brobotics.id
+    ) {
+        return;
+    }
+
     // Handle message commands
     handleMessageCommands(message);
     handleReactionCommands(message);
