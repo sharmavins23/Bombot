@@ -23,6 +23,12 @@ Check out repository stats
 
 # Development
 
+Obviously, to start, you need to clone the repo and `npm install`. This requires
+installing [`NodeJS`](https://nodejs.org/en). You also might need
+[Chocolatey](https://chocolatey.org/install) - With Choco, you can
+`choco install nodejs`. The current version of Node the project uses is 22.x,
+which is also the current LTS version of NodeJS (as of writing this).
+
 If you are an administrator, it's highly recommended that you _never_ push
 directly to mainline without testing extensively. If you are not a collaborator
 on the project, feel free to put in a pull request! We can test it, merge it,
