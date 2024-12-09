@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 import { HexColorString } from "discord.js";
-import { LogX } from "./Logging.js";
+import { logD, logW } from "./Logging.js";
 
 // ===== Interfaces ============================================================
 
@@ -34,7 +34,7 @@ export function getGitCommitHash(short: boolean = true): string {
         const commitHash = execSync(command).toString().trim();
         return commitHash;
     } catch (error) {
-        LogX.logW("Failed to get Git commit hash:", error);
+        logW("Failed to get Git commit hash:", error);
         return "";
     }
 }
@@ -80,10 +80,10 @@ export function getGitCommitMetadata(): GitCommitMetadata {
                     .trim()
                     .substring(0, 80) + "...",
         };
-        LogX.logD("Git commit metadata fetched:", latestCommitMetadata);
+        logD("Git commit metadata fetched:", latestCommitMetadata);
         return latestCommitMetadata;
     } catch (error) {
-        LogX.logW("Failed to get Git commit metadata:", error);
+        logW("Failed to get Git commit metadata:", error);
         return {
             author: "Unknown",
             color: "#000000",

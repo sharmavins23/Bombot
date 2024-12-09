@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 import { ReactionCommand } from "../../extensions/Discord.js";
-import { Stringy } from "../../utils/Strings.js";
+import { messageContainsAll } from "../../utils/Strings.js";
 import UserConfig from "../../utils/UserConfig.js";
 
 /**
@@ -11,10 +11,13 @@ const reactionCommand: ReactionCommand = {
     description: "Complains at Logan whenever he wants to buy a thing.",
     checker: async (message: Message) => {
         const isHim = message.author.id === UserConfig.Logan.id;
-        const isBuy = Stringy.messageContainsAll(message.content, [
-            "should",
-            "I",
-            "buy|get",
+        const isBuy = messageContainsAll(message.content, [
+            "should I buy|get",
+            "I should buy|get",
+            "should I purchase",
+            "I should purchase",
+            "I did buy|get",
+            "I bought|got|purchased",
         ]);
         return isHim && isBuy;
     },
@@ -43,7 +46,7 @@ const reactionCommand: ReactionCommand = {
             "Well Yes, But Actually No": {
                 value: 0.2,
                 emoji: "a:wellyesbutactuallyno:760342961769938964",
-                msg: "You probably shouldn't... But do it anyways.",
+                msg: "You probably shouldn't buy that thing... But do it anyways.",
             },
             No: {
                 value: 0.4,

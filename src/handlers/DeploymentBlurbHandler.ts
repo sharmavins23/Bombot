@@ -2,7 +2,7 @@ import { Client, EmbedBuilder, TextChannel } from "discord.js";
 import BombotConstants from "../Constants.js";
 import ChannelConfig from "../utils/ChannelConfig.js";
 import { getGitCommitMetadata } from "../utils/GitTools.js";
-import { LogX } from "../utils/Logging.js";
+import { logE } from "../utils/Logging.js";
 
 /**
  * Creates a deployment blurb and sends it to the bot testing channel.
@@ -15,9 +15,7 @@ export async function CreateDeploymentBlurb(client: Client) {
         ChannelConfig.brobotics.id,
     ) as TextChannel;
     if (!channel)
-        LogX.logE(
-            `Could not find channel with ID ${ChannelConfig.brobotics.id}.`,
-        );
+        logE(`Could not find channel with ID ${ChannelConfig.brobotics.id}.`);
 
     const latestCommitMetadata = getGitCommitMetadata();
     const blurb = new EmbedBuilder()

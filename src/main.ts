@@ -15,7 +15,7 @@ import {
 } from "./handlers/HandleReactionCommands.js";
 import ChannelConfig from "./utils/ChannelConfig.js";
 import { getGitCommitHash } from "./utils/GitTools.js";
-import { LogX } from "./utils/Logging.js";
+import { assert, log, logD } from "./utils/Logging.js";
 
 // ===== Configuration =========================================================
 
@@ -70,22 +70,22 @@ client.on("messageCreate", async (message: Message) => {
 
 // Run!
 async function run() {
-    LogX.assert(
+    assert(
         typeof process.env.BOT_TOKEN !== "undefined",
         "Could not find bot token in your environment!",
     );
 
     const loginOutput: string = await client.login(process.env.BOT_TOKEN);
-    LogX.assert(
+    assert(
         loginOutput === process.env.BOT_TOKEN,
         "Failed to login to Discord!",
     );
 
-    LogX.log(
+    log(
         `${BombotConstants.BOT_NAME} is now succesfully`,
         chalk.green("logged in") + "!",
     );
-    LogX.logD(`Latest deployment: ${chalk.cyan(getGitCommitHash())}`);
+    logD(`Latest deployment: ${chalk.cyan(getGitCommitHash())}`);
 }
 
 run();
