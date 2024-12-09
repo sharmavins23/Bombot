@@ -28,7 +28,7 @@ export function messageContainsString(message: string, expr: string): boolean {
     message = message.toLowerCase();
     expr = expr.toLowerCase();
     // Ensure that the expression only has alphanumeric + |
-    if (/[^a-z0-9 |]/.test(expr))
+    if (/[^a-z0-9 |'"]/.test(expr))
         logE("Invalid expression passed into messageContainsString():", expr);
 
     // Split the message into words into a list
