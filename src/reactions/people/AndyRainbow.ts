@@ -1,6 +1,6 @@
 import { Message } from "discord.js";
 import { ReactionCommand } from "../../extensions/Discord.js";
-import { messageContainsString } from "../../utils/Strings.js";
+import { messageContainsAll } from "../../utils/Strings.js";
 import UserConfig from "../../utils/UserConfig.js";
 
 /**
@@ -11,11 +11,12 @@ const reactionCommand: ReactionCommand = {
     description: "Reacts with 🏳️‍🌈 whenever Andy gets a little quirky.",
     emoji: ["🏳️‍🌈", ":a:notvanilla:1216448770657615873"],
     checker: async (message: Message) => {
-        const isHim = message.author.id === UserConfig.Andy.id;
-        const isRaunchy = messageContainsString(
-            message.content,
-            "anal|ass|cock|dick|penis",
-        );
+        const isHim = message.author.id === UserConfig.Vins.id;
+        const raunchyWords = "anal|ass|balls|cock|dick|penis|schlong|shaft";
+        const isRaunchy = messageContainsAll(message.content, [
+            raunchyWords,
+            "suck|sucking " + raunchyWords,
+        ]);
         return isHim && isRaunchy;
     },
     executable: async () => {},
