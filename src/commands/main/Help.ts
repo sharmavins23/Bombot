@@ -223,6 +223,7 @@ const messageCommand: MessageCommand = {
                             return messageCommand.name === command.name;
                         },
                     ) as MessageCommand;
+                if (!messageCommand) return false;
 
                 // If the command has aliases, check them
                 if (messageCommand.aliases) {
@@ -245,9 +246,13 @@ const messageCommand: MessageCommand = {
                             return messageCommand.name === command.name;
                         },
                     ) as MessageCommand;
-                    return messageCommand.aliases?.includes(
-                        searchedCommand.toLowerCase(),
-                    );
+                    if (!messageCommand) return false;
+
+                    if (messageCommand.aliases)
+                        return messageCommand.aliases.includes(
+                            searchedCommand.toLowerCase(),
+                        );
+                    else return false;
                 }) as HelpCommand,
             );
         }
