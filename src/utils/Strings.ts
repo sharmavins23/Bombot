@@ -31,6 +31,9 @@ export function messageContainsString(message: string, expr: string): boolean {
     if (/[^a-z0-9 |]/.test(expr))
         logE("Invalid expression passed into messageContainsString():", expr);
 
+    // Split the message into words into a list
+    let messageWords = message.split(" ");
+
     // Split the expression into AND groups, separated by spaces
     const andGroups = expr.split(" ");
 
@@ -42,9 +45,9 @@ export function messageContainsString(message: string, expr: string): boolean {
         // Find the first OR group that is present in the message after the current index
         let found = false;
         for (const orGroup of orGroups) {
-            const index = message.indexOf(orGroup, currentIndex);
+            const index = messageWords.indexOf(orGroup, currentIndex);
             if (index !== -1) {
-                currentIndex = index + orGroup.length;
+                currentIndex = index + 1;
                 found = true;
                 break;
             }

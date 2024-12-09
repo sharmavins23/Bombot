@@ -12,12 +12,9 @@ const reactionCommand: ReactionCommand = {
     checker: async (message: Message) => {
         const isHim = message.author.id === UserConfig.Logan.id;
         const isBuy = messageContainsAll(message.content, [
-            "should I buy|get",
-            "I should buy|get",
-            "should I purchase",
-            "I should purchase",
-            "I did buy|get",
-            "I bought|got|purchased",
+            "can|could|should I buy|get|purchase",
+            "I can|could|should buy|get|purchase",
+            "can|could|should buy|get|purchase",
         ]);
         return isHim && isBuy;
     },
