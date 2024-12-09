@@ -32,7 +32,7 @@ export function messageContainsString(message: string, expr: string): boolean {
         logE("Invalid expression passed into messageContainsString():", expr);
 
     // Split the message into words into a list
-    let messageWords = message.split(" ");
+    const messageWords = message.split(" ");
 
     // Split the expression into AND groups, separated by spaces
     const andGroups = expr.split(" ");
