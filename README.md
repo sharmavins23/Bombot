@@ -23,16 +23,22 @@ Check out repository stats
 
 # Development
 
-Obviously, to start, you need to clone the repo and `npm install`. This requires
-installing [`NodeJS`](https://nodejs.org/en). You also might need
-[Chocolatey](https://chocolatey.org/install) (follow the instructions to install for individual use; be sure to use an administrator level terminal).
-Choco allows you to run `choco install nodejs` to easily install Node. The current version of Node the project uses is 22.x,
-which is also the current LTS version of NodeJS (as of writing this).
+The obvious starting steps are:
 
-If you are an administrator, it's highly recommended that you _never_ push
-directly to mainline without testing extensively. If you are not a collaborator
-on the project, feel free to put in a pull request! We can test it, merge it,
-and potentially roll it back when it breaks everything.
+1. (Optional) install [Chocolatey](https://chocolatey.org/install), if you're
+   developing on Windows. This is a Windows-based package manager that allows
+   you to run `choco install` on the command line and install other packages.
+    - On MacOS, use `brew install` instead; On Linux, use whatever package
+      manager you utilize. If you use Linux, you're responsible for tracking
+      what your OS needs and uses and modifying these steps as necessary.
+2. `choco install nodejs` (or `brew install node`) should install the latest
+   (Long Term Support, or LTS) version of Node - Right now, that's 22.x.
+3. `npm install` to install all of the packages required.
+
+It's highly recommended that you _never_ push directly to mainline without
+testing extensively. If you are not a collaborator on the project, feel free to
+put in a pull request! We can test it, merge it, and potentially roll it back
+when it breaks everything.
 
 To format your code, type `npm run format`. Ensure that you format your code
 before pushing it to master.
