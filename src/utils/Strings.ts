@@ -32,9 +32,9 @@ export function messageContainsString(message: string, expr: string): boolean {
         logE("Invalid expression passed into messageContainsString():", expr);
 
     // Split the message into words into a list
-    const messageWords = message.split(" ");
+    const messageWords = message.split(/\s+/);
 
-    // Split the expression into AND groups, separated by spaces
+    // Split the expression into AND groups, separated by spaces and newlines
     const andGroups = expr.split(" ");
 
     // Each AND group MUST be present in the message, in order
