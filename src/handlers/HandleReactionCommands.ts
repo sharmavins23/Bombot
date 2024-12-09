@@ -10,6 +10,11 @@ const __dirname = path.dirname(__filename);
 
 // ===== Command registry ======================================================
 
+/**
+ * Register all reaction commands in the ./reactions folder.
+ *
+ * @param client The Discord client
+ */
 export async function RegisterReactionCommands(client: Client) {
     log("Registering reaction commands...");
 
@@ -57,6 +62,12 @@ export async function RegisterReactionCommands(client: Client) {
 
 // ===== Command handler =======================================================
 
+/**
+ * Handler for reaction commands.
+ *
+ * @param client The Discord client.
+ * @param message The message to check for reaction commands.
+ */
 export async function HandleReactionCommands(client: Client, message: Message) {
     // For each reaction command, pass it in and check if it should be executed
     client.commands.reaction.each(async (command) => {

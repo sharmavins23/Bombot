@@ -128,6 +128,15 @@ function generateCommandHelpEmbed(
             },
         );
 
+        // Add aliases, if they exist
+        if (messageCommand.aliases) {
+            helpEmbed.addFields({
+                name: "Aliases",
+                value: messageCommand.aliases.join(", "),
+            });
+        }
+
+        // Add details, if they exist
         if (messageCommand.detailed) {
             helpEmbed.addFields({
                 name: "More details",
@@ -202,6 +211,44 @@ const messageCommand: MessageCommand = {
                         command.name.toLowerCase() ===
                         searchedCommand.toLowerCase(),
                 ) as HelpCommand,
+            );
+        }
+        // If it's an alias...
+        else if (
+            commandsList.some((command) => {
+                // Find the command in the list of commands
+                let messageCommand: MessageCommand =
+                    message.client.commands.message.find(
+                        (messageCommand: MessageCommand) => {
+                            return messageCommand.name === command.name;
+                        },
+                    ) as MessageCommand;
+
+                // If the command has aliases, check them
+                if (messageCommand.aliases) {
+                    return messageCommand.aliases.includes(
+                        switcher.toLowerCase(),
+                    );
+                }
+                // Otherwise return false
+                return false;
+            })
+        ) {
+            const searchedCommand = switcher;
+            logD(`Help called for alias ${chalk.cyan(searchedCommand)}`);
+
+            helpEmbed = generateCommandHelpEmbed(
+                message,
+                commandsList.find((command) => {
+                    let messageCommand = message.client.commands.message.find(
+                        (messageCommand: MessageCommand) => {
+                            return messageCommand.name === command.name;
+                        },
+                    ) as MessageCommand;
+                    return messageCommand.aliases?.includes(
+                        searchedCommand.toLowerCase(),
+                    );
+                }) as HelpCommand,
             );
         }
         // If it's a number and we're going to page...

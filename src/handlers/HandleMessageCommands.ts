@@ -13,6 +13,11 @@ const __dirname = path.dirname(__filename);
 
 // ===== Command registry ======================================================
 
+/**
+ * Register all message commands in the ./commands folder.
+ *
+ * @param client The Discord client
+ */
 export async function RegisterMessageCommands(client: Client) {
     log("Registering simple commands...");
 
@@ -78,6 +83,12 @@ export async function RegisterMessageCommands(client: Client) {
 
 // ===== Command handler =======================================================
 
+/**
+ * Handler for message commands.
+ *
+ * @param client The Discord client.
+ * @param message The message to check for message commands.
+ */
 export async function HandleMessageCommands(client: Client, message: Message) {
     // Don't handle message commands from bots
     if (message.author.bot) return;
