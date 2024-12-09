@@ -1,5 +1,6 @@
 import { ChannelType, Snowflake } from "discord.js";
 
+// Channel object
 interface ChannelConfiguration {
     id: Snowflake;
     type: ChannelType;

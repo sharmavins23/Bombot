@@ -1,8 +1,9 @@
 import chalk from "chalk";
 import { EmbedBuilder, Message } from "discord.js";
 import { Command, MessageCommand } from "../../extensions/Discord.js";
-import { LogX } from "../../utils/Logging.js";
-import { Stringy } from "../../utils/Strings.js";
+import FlavorText from "../../utils/FlavorText.js";
+import { logD, logW } from "../../utils/Logging.js";
+import { pickRandom } from "../../utils/Random.js";
 
 // Enum for command types
 enum CommandType {
@@ -15,39 +16,19 @@ interface HelpCommand extends Command {
     type: CommandType;
 }
 
-// Some random flavortext for the help command
-const flavortext = {
-    titles: [
-        "Some commands, and what they do",
-        "Here's what I can do",
-        "I'm here to help!",
-        "Need a hand?",
-        "The Bombers Secret Society of Justice forever!",
-        "My functionality is vast",
-    ],
-    calltoactions: [
-        "here's some tips...",
-        "here's some commands...",
-        "you asked for help?",
-        "you need some help?",
-        "let me do it for you",
-        "I'm here to help",
-        "shouldn't you know these commands already?",
-    ],
-    commandspecific: [
-        "Here's how you use",
-        "Help for",
-        "Here's a refresher on",
-        "This is how you use",
-        "Here's the syntax for",
-    ],
-};
-
+/**
+ * Generates a basic help embed, without any of the bells or whistles.
+ *
+ * @param message The message that triggered the help command.
+ * @returns A generated base help embed.
+ */
 function generateBaseHelpEmbed(message: Message): EmbedBuilder {
     return new EmbedBuilder()
         .setColor(message.member?.displayHexColor || "#FFFFFF")
         .setAuthor({
-            name: `${message.author.displayName}, ${Stringy.flavorIt(flavortext.calltoactions)}`,
+            name: pickRandom(
+                FlavorText.HelpCommand.calltoactions(message.author.username),
+            ),
             iconURL: message.author.avatarURL() ?? undefined,
         })
         .setTimestamp()
@@ -72,7 +53,7 @@ function generateHelpEmbed(
     pageCount: number = 1,
 ): EmbedBuilder {
     const helpEmbed = generateBaseHelpEmbed(message);
-    helpEmbed.setTitle(Stringy.flavorIt(flavortext.titles));
+    helpEmbed.setTitle(pickRandom(FlavorText.HelpCommand.titles));
 
     if (pageNumber > 1) {
         helpEmbed.setDescription(`Showing page ${pageNumber} of ${pageCount}`);
@@ -99,9 +80,9 @@ function generateHelpEmbed(
 /**
  * Generates a help embed for a specific command.
  *
- * @param message The message that triggered the help command
- * @param command The command to generate help for
- * @returns The help embed for the command
+ * @param message The message that triggered the help command.
+ * @param command The command to generate help for.
+ * @returns The help embed for the command.
  */
 function generateCommandHelpEmbed(
     message: Message,
@@ -120,7 +101,7 @@ function generateCommandHelpEmbed(
                 },
             ) as MessageCommand;
         if (!messageCommand) {
-            LogX.logW(`Could not find message command ${command.name}`);
+            logW(`Could not find message command ${command.name}`);
             helpEmbed.addFields({
                 name: `An error has occurred internally.`,
                 value: `Please try again later, or contact one of the developers.`,
@@ -147,6 +128,15 @@ function generateCommandHelpEmbed(
             },
         );
 
+        // Add aliases, if they exist
+        if (messageCommand.aliases) {
+            helpEmbed.addFields({
+                name: "Aliases",
+                value: messageCommand.aliases.join(", "),
+            });
+        }
+
+        // Add details, if they exist
         if (messageCommand.detailed) {
             helpEmbed.addFields({
                 name: "More details",
@@ -162,7 +152,7 @@ function generateCommandHelpEmbed(
             value: command.description,
         });
     } else {
-        LogX.logW(`Unknown command type for command ${command.name}`);
+        logW(`Unknown command type for command ${command.name}`);
     }
 
     return helpEmbed;
@@ -212,7 +202,7 @@ const messageCommand: MessageCommand = {
             )
         ) {
             const searchedCommand = switcher;
-            LogX.logD(`Help called for command ${chalk.cyan(searchedCommand)}`);
+            logD(`Help called for command ${chalk.cyan(searchedCommand)}`);
 
             helpEmbed = generateCommandHelpEmbed(
                 message,
@@ -223,10 +213,48 @@ const messageCommand: MessageCommand = {
                 ) as HelpCommand,
             );
         }
+        // If it's an alias...
+        else if (
+            commandsList.some((command) => {
+                // Find the command in the list of commands
+                const messageCommand: MessageCommand =
+                    message.client.commands.message.find(
+                        (messageCommand: MessageCommand) => {
+                            return messageCommand.name === command.name;
+                        },
+                    ) as MessageCommand;
+
+                // If the command has aliases, check them
+                if (messageCommand.aliases) {
+                    return messageCommand.aliases.includes(
+                        switcher.toLowerCase(),
+                    );
+                }
+                // Otherwise return false
+                return false;
+            })
+        ) {
+            const searchedCommand = switcher;
+            logD(`Help called for alias ${chalk.cyan(searchedCommand)}`);
+
+            helpEmbed = generateCommandHelpEmbed(
+                message,
+                commandsList.find((command) => {
+                    const messageCommand = message.client.commands.message.find(
+                        (messageCommand: MessageCommand) => {
+                            return messageCommand.name === command.name;
+                        },
+                    ) as MessageCommand;
+                    return messageCommand.aliases?.includes(
+                        searchedCommand.toLowerCase(),
+                    );
+                }) as HelpCommand,
+            );
+        }
         // If it's a number and we're going to page...
         else if (areWeGoingToPage && !isNaN(parseInt(switcher))) {
             const pageNumber = parseInt(switcher);
-            LogX.logD(`Help called for page ${chalk.green(pageNumber)}`);
+            logD(`Help called for page ${chalk.green(pageNumber)}`);
 
             // Slice commands to show the correct page
             commandsList = commandsList.slice(
