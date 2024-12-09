@@ -22,6 +22,6 @@ export function pickNRandom<Type>(things: Type[], n: number = 1): Type[] {
     if (n === 1) return [pickRandom(things)];
 
     // Otherwise, we can randomly shuffle the list, then pick the first n
-    let shuffled = things.sort(() => Math.random() - 0.5);
+    const shuffled = things.sort(() => Math.random() - 0.5);
     return shuffled.slice(0, n);
 }

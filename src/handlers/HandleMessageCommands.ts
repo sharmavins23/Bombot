@@ -79,6 +79,20 @@ export async function RegisterMessageCommands(client: Client) {
             );
         }
     }
+
+    // Final check - Ensure all commands don't have name/alias collisions
+    const commandNames = client.commands.message.map((cmd) => cmd.name);
+    const aliases = client.commands.message
+        .map((cmd) => cmd.aliases ?? [])
+        .flat();
+    const allNames = commandNames.concat(aliases);
+    const duplicates = allNames.filter(
+        (name, index) => allNames.indexOf(name) !== index,
+    );
+    assert(
+        duplicates.length === 0,
+        `Duplicate command names or aliases found: ${duplicates.join(", ")}`,
+    );
 }
 
 // ===== Command handler =======================================================

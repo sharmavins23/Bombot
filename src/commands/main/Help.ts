@@ -217,7 +217,7 @@ const messageCommand: MessageCommand = {
         else if (
             commandsList.some((command) => {
                 // Find the command in the list of commands
-                let messageCommand: MessageCommand =
+                const messageCommand: MessageCommand =
                     message.client.commands.message.find(
                         (messageCommand: MessageCommand) => {
                             return messageCommand.name === command.name;
@@ -240,7 +240,7 @@ const messageCommand: MessageCommand = {
             helpEmbed = generateCommandHelpEmbed(
                 message,
                 commandsList.find((command) => {
-                    let messageCommand = message.client.commands.message.find(
+                    const messageCommand = message.client.commands.message.find(
                         (messageCommand: MessageCommand) => {
                             return messageCommand.name === command.name;
                         },
